@@ -2,7 +2,7 @@ package main;
 
 import javax.swing.*;
 
-// video 2 min 6:23
+// video 2 min 14:24
 
 public class Main {
     public static void main(String[] args) {
