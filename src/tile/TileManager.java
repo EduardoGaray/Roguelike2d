@@ -18,7 +18,7 @@ public class TileManager {
         this.gp = gp;
         tile = new Tile[gp.maxWorldCol * gp.maxWorldRow];
         getTileImage();
-        loadMap();
+        smoothMap();
     }
 
     //this method generates basic tiles randomly, we can work on a more complex system for map generation from here
@@ -30,9 +30,10 @@ public class TileManager {
             int y = 1;
             for (int i = 0; i<tile.length; i++ ){
                 tile[i] = new Tile();
+                tile[i].id = i;
                 tile[i].x = x;
                 tile[i].y = y;
-                final String[] name = {"grass00","grass00","grass00","earth","water00","tree"};
+                final String[] name = {"earth","wall"};
                 Random random = new Random();
                 int index = random.nextInt(name.length);
                 tile[i].filename = name[index];
@@ -45,19 +46,32 @@ public class TileManager {
                     row++;
                     y += 1;
                 }
-                System.out.println(tile[i].filename+" "+tile[i].x+" "+tile[i].y);
+                System.out.println(tile[i].filename+" "+tile[i].x+" "+tile[i].y+" "+tile[i].id);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void loadMap() {
-        for (int i = 0; i < tile.length; i++) {
-
+    public void smoothMap() {
+        try {
+            int cont;
+            int north;
+            int south;
+            for (int i = 0; i<tile.length; i++ ){
+               north = tile[i].id - gp.maxWorldCol;
+               south = tile[i].id + gp.maxWorldCol;
+               if(north <0){north = 0;}
+               if(south > tile.length-1){ south = tile.length-1;}
+               if(tile[i].filename.equals("wall") && tile[north].filename.equals("earth") && tile[south].filename.equals("earth")){
+                   tile[i].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/earth.png")));
+               }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-    }
+        }
     //This method renders the tile array.image property
     public void draw(Graphics2D g2) {
         int col = 0;
