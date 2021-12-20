@@ -4,12 +4,7 @@ import main.GamePanel;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
 
@@ -21,9 +16,7 @@ public class TileManager {
     public TileManager(GamePanel gp) {
         //Here we initialize the process to create the map
         this.gp = gp;
-        tile = new Tile[gp.maxScreenCol * gp.maxScreenRow];
-        int area = gp.maxScreenCol * gp.maxScreenRow;
-        System.out.println(area);
+        tile = new Tile[gp.maxWorldCol * gp.maxWorldRow];
         getTileImage();
         loadMap();
     }
@@ -39,11 +32,11 @@ public class TileManager {
                 tile[i] = new Tile();
                 tile[i].x = x;
                 tile[i].y = y;
-                final String[] name = {"grass00","earth","water00","tree"};
+                final String[] name = {"grass00","grass00","grass00","earth","water00","tree"};
                 Random random = new Random();
                 int index = random.nextInt(name.length);
-                tile[i].name = name[index];
-                tile[i].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/"+tile[i].name+".png")));
+                tile[i].filename = name[index];
+                tile[i].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/"+tile[i].filename+".png")));
                 col++;
                 x += 1;
                 if (col == gp.maxScreenCol) {
@@ -52,7 +45,7 @@ public class TileManager {
                     row++;
                     y += 1;
                 }
-                System.out.println(tile[i].name+" "+tile[i].x+" "+tile[i].y);
+                System.out.println(tile[i].filename+" "+tile[i].x+" "+tile[i].y);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -69,19 +62,23 @@ public class TileManager {
     public void draw(Graphics2D g2) {
         int col = 0;
         int row = 0;
-        int x = 0;
-        int y = 0;
         int cont = 0;
-        while (col < gp.maxScreenCol && row < gp.maxScreenRow) {
-            g2.drawImage(tile[cont].image, x, y, gp.tileSize, gp.tileSize, null);
+        while (col < gp.maxWorldCol && row < gp.maxWorldRow) {
+
+            int worldX = col * gp.tileSize;
+            int worldY = row * gp.tileSize;
+
+            int screenX = worldX -gp.player.worldX + gp.player.screenX;
+            int screenY = worldY -gp.player.worldY + gp.player.screenY;
+
+            g2.drawImage(tile[cont].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
             cont++;
             col++;
-            x += gp.tileSize;
-            if (col == gp.maxScreenCol) {
+
+            if (col == gp.maxWorldCol) {
                 col = 0;
-                x = 0;
+
                 row++;
-                y += gp.tileSize;
             }
             if (cont >= tile.length) {
                 cont = 0;
