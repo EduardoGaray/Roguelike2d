@@ -1,0 +1,26 @@
+//Draw method for tiles
+
+public void draw(Graphics2D g2){
+        int xpos = 0;
+        int ypos = 0;
+        int id = 1;
+        int counter = 0;
+        for (int i = 0; i <gp.maxScreenCol * gp.maxScreenRow; i++, xpos += gp.tileSize, counter++){
+            if(counter == gp.maxScreenCol){
+                id = 0;
+                ypos += gp.tileSize;
+                xpos = 0;
+                counter = 0;
+            }
+            g2.drawImage(tile[id].image,xpos,ypos,gp.tileSize,gp.tileSize,null);
+        }
+    }
+
+    public void randomMap(){
+           for (int i = 0; i <gp.maxScreenCol * gp.maxScreenRow; i++){
+               Random random = new Random();
+               int randomNumber = random.nextInt(2 + 1 - 0) + 0;
+               tilemap.add(randomNumber);
+
+           }
+        }
