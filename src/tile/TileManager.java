@@ -37,6 +37,7 @@ public class TileManager {
                 Random random = new Random();
                 int index = random.nextInt(name.length);
                 tile[i].filename = name[index];
+                if(tile[i].filename.equals("wall00")){ tile[i].collision = true;}
                 tile[i].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/" + tile[i].filename + ".png")));
                 col++;
                 x += 1;

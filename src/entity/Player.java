@@ -18,8 +18,13 @@ public class Player extends Entity {
     public Player(GamePanel gp, KeyHandler keyH) {
         this.gp = gp;
         this.keyH = keyH;
+
         screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
         screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
+
+        solidArea = new Rectangle(8,16,32,32);
+
+
         setDefaultValues();
         getPlayerImage();
     }
@@ -60,6 +65,10 @@ public class Player extends Entity {
             direction = "right";
             worldX += speed;
         }
+
+        collisionOn = false;
+        gp.cChecker.CheckTile(this);
+
         if (spriteCounter > 8) {
             if (spriteNum == 1) {
                 spriteNum = 2;
