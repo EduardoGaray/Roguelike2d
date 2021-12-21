@@ -13,11 +13,11 @@ public class GamePanel extends JPanel implements Runnable {
     public final int originalTileSize = 16; //16x16 tile
     public final int scale = 3; // scale to resolution
 
-    public final int tileSize = originalTileSize * scale; //48x48 tile
-    public final int maxScreenCol = 16; // ^ v
-    public final int maxScreenRow = 12; // <>
-    public final int screenWidth = tileSize * maxScreenCol; //768 px
-    public final int screenHeight = tileSize * maxScreenRow; //576 px
+    public int tileSize = originalTileSize * scale; //48x48 tile
+    public int maxScreenCol = 16; // ^ v
+    public int maxScreenRow = 12; // <>
+    public int screenWidth = tileSize * maxScreenCol; //768 px
+    public int screenHeight = tileSize * maxScreenRow; //576 px
 
     //WORLD SETTINGS
     public final int maxWorldCol =50;
@@ -29,7 +29,7 @@ public class GamePanel extends JPanel implements Runnable {
     int fps = 60;
 
     TileManager tileM = new TileManager(this);
-    KeyHandler keyH = new KeyHandler();
+    KeyHandler keyH = new KeyHandler(this);
     Thread gameThread; //When we call this thread, it automatically calls its run() method
     public Player player = new Player(this, keyH);
 
@@ -40,6 +40,12 @@ public class GamePanel extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
+    }
+
+    public void zoomInOut(int i){
+
+        tileSize += i;
+
     }
 
     public void startGameThread() {

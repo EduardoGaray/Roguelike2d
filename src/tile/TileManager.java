@@ -55,17 +55,38 @@ public class TileManager {
 
     public void smoothMap() {
         try {
-            int cont;
+            int cont = 0;
             int north;
             int south;
+            int west;
+            int east;
             for (int i = 0; i<tile.length; i++ ){
+
                north = tile[i].id - gp.maxWorldCol;
                south = tile[i].id + gp.maxWorldCol;
+               west = tile[i].id + 1;
+               east = tile[i].id - 1;
+
                if(north <0){north = 0;}
                if(south > tile.length-1){ south = tile.length-1;}
-               if(tile[i].filename.equals("wall") && tile[north].filename.equals("earth") && tile[south].filename.equals("earth")){
-                   tile[i].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/earth.png")));
+                if(east <0){east = 0;}
+                if(west > tile.length-1){ west = tile.length-1;}
+               if(tile[i].filename.equals("wall") && tile[north].filename.equals("earth")){
+                   cont++;
                }
+                if(tile[i].filename.equals("wall") && tile[south].filename.equals("earth")){
+                    cont++;
+                }
+                if(tile[i].filename.equals("wall") && tile[west].filename.equals("earth")){
+                    cont++;
+                }
+                if(tile[i].filename.equals("wall") && tile[east].filename.equals("earth")){
+                    cont++;
+                }
+                if(cont >=3){
+                    tile[i].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/earth.png")));
+                }
+                cont =0;
             }
         } catch (IOException e) {
             e.printStackTrace();
