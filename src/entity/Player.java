@@ -47,21 +47,19 @@ public class Player extends Entity {
     }
 
     public void update() {
+        spriteCounter++;
         if (keyH.upPressed) {
-            spriteCounter++;
             direction = "up";
             worldY -= speed;
-            //if(playerY <0){playerY = 0;}
         } else if (keyH.downPressed) {
-            spriteCounter++;
             direction = "down";
             worldY += speed;
         } else if (keyH.leftPressed) {
-            spriteCounter++;
             direction = "left";
             worldX -= speed;
+            this.x -=1;
+            if(this.x <0){this.y = 0;}
         } else if (keyH.rightPressed) {
-            spriteCounter++;
             direction = "right";
             worldX += speed;
         }

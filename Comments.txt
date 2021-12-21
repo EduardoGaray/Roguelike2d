@@ -38,3 +38,36 @@
         }
         g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
     }
+
+    public void update() {
+            if (keyH.upPressed) {
+                spriteCounter++;
+                direction = "up";
+                worldY -= speed;
+                //if(playerY <0){playerY = 0;}
+            } else if (keyH.downPressed) {
+                spriteCounter++;
+                direction = "down";
+                worldY += speed;
+            } else if (keyH.leftPressed) {
+                spriteCounter++;
+                direction = "left";
+                worldX -= speed;
+            } else if (keyH.rightPressed) {
+                spriteCounter++;
+                direction = "right";
+                worldX += speed;
+            }
+
+            collisionOn = false;
+            gp.cChecker.CheckTile(this);
+
+            if (spriteCounter > 8) {
+                if (spriteNum == 1) {
+                    spriteNum = 2;
+                } else if (spriteNum == 2) {
+                    spriteNum = 1;
+                }
+                spriteCounter = 0;
+            }
+        }
