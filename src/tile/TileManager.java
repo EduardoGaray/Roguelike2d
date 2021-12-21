@@ -33,7 +33,7 @@ public class TileManager {
                 tile[i].id = i;
                 tile[i].x = x;
                 tile[i].y = y;
-                final String[] name = {"earth", "wall"};
+                final String[] name = {"floor00", "wall00"};
                 Random random = new Random();
                 int index = random.nextInt(name.length);
                 tile[i].filename = name[index];
@@ -80,22 +80,22 @@ public class TileManager {
                     if (west > tile.length - 1) {
                         west = tile.length - 1;
                     }
-                    if (tile[i].filename.equals("wall")) {
-                        if (tile[north].filename.equals("earth")) {
+                    if (tile[i].filename.equals("wall00")) {
+                        if (tile[north].filename.equals("floor00")) {
                             cont++;
                         }
-                        if (tile[south].filename.equals("earth")) {
+                        if (tile[south].filename.equals("floor00")) {
                             cont++;
                         }
-                        if (tile[east].filename.equals("earth")) {
+                        if (tile[east].filename.equals("floor00")) {
                             cont++;
                         }
-                        if (tile[west].filename.equals("earth")) {
+                        if (tile[west].filename.equals("floor00")) {
                             cont++;
                         }
                         if (cont >= 3) {
-                            tile[i].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/earth.png")));
-                            tile[i].filename = "earth";
+                            tile[i].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/floor00.png")));
+                            tile[i].filename = "floor00";
                         }
                         cont = 0;
                     }
@@ -120,22 +120,22 @@ public class TileManager {
                     if (west > tile.length - 1) {
                         west = tile.length - 1;
                     }
-                    if (tile[i].filename.equals("earth")) {
-                        if (tile[north].filename.equals("wall")) {
+                    if (tile[i].filename.equals("floor00")) {
+                        if (tile[north].filename.equals("wall00")) {
                             cont++;
                         }
-                        if (tile[south].filename.equals("wall")) {
+                        if (tile[south].filename.equals("wall00")) {
                             cont++;
                         }
-                        if (tile[east].filename.equals("wall")) {
+                        if (tile[east].filename.equals("wall00")) {
                             cont++;
                         }
-                        if (tile[west].filename.equals("wall")) {
+                        if (tile[west].filename.equals("wall00")) {
                             cont++;
                         }
                         if (cont >= 4) {
-                            tile[i].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/wall.png")));
-                            tile[i].filename = "wall";
+                            tile[i].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/wall00.png")));
+                            tile[i].filename = "wall00";
                         }
                         cont = 0;
                     }
