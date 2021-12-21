@@ -7,8 +7,9 @@ public class KeyHandler implements KeyListener {
 
     public boolean upPressed, downPressed, leftPressed, rightPressed;
     GamePanel gp;
-    public  KeyHandler(GamePanel gp){
-          this.gp = gp;
+
+    public KeyHandler(GamePanel gp) {
+        this.gp = gp;
     }
 
     @Override
@@ -32,7 +33,7 @@ public class KeyHandler implements KeyListener {
             rightPressed = true;
         }
         if (code == KeyEvent.VK_PLUS) {
-             gp.zoomInOut(1);
+            gp.zoomInOut(1);
         }
         if (code == KeyEvent.VK_MINUS) {
             gp.zoomInOut(-1);

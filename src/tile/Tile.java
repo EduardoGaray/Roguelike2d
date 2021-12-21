@@ -8,7 +8,7 @@ public class Tile {
     public String name;
     public String filename;
     public String type;
-    public int x,y;
+    public int x, y;
     public int screenx, screeny;
     public int neighbors;
     public int id;

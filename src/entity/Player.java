@@ -18,16 +18,16 @@ public class Player extends Entity {
     public Player(GamePanel gp, KeyHandler keyH) {
         this.gp = gp;
         this.keyH = keyH;
-        screenX = gp.screenWidth/2 - (gp.tileSize/2);
-        screenY = gp.screenHeight/2 - (gp.tileSize/2);
+        screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
+        screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
         setDefaultValues();
         getPlayerImage();
     }
 
     public void setDefaultValues() {
         worldX = gp.tileSize * 5;
-        worldY = gp.tileSize *5;
-        speed = 4;
+        worldY = gp.tileSize * 5;
+        speed = gp.worldWidth /600;
         direction = "down";
     }
 
@@ -67,10 +67,10 @@ public class Player extends Entity {
             direction = "right";
             worldX += speed;
         }
-        if (spriteCounter > 8){
-            if(spriteNum == 1){
+        if (spriteCounter > 8) {
+            if (spriteNum == 1) {
                 spriteNum = 2;
-            } else if (spriteNum == 2){
+            } else if (spriteNum == 2) {
                 spriteNum = 1;
             }
             spriteCounter = 0;
@@ -83,34 +83,34 @@ public class Player extends Entity {
         BufferedImage image = null;
         switch (direction) {
             case "up":
-                if(spriteNum == 1){
+                if (spriteNum == 1) {
                     image = up1;
                 }
-                if(spriteNum == 2){
+                if (spriteNum == 2) {
                     image = up2;
                 }
                 break;
             case "down":
-                if(spriteNum == 1){
+                if (spriteNum == 1) {
                     image = down1;
                 }
-                if(spriteNum == 2){
+                if (spriteNum == 2) {
                     image = down2;
                 }
                 break;
             case "left":
-                if(spriteNum == 1){
+                if (spriteNum == 1) {
                     image = left1;
                 }
-                if(spriteNum == 2){
+                if (spriteNum == 2) {
                     image = left2;
                 }
                 break;
             case "right":
-                if(spriteNum == 1){
+                if (spriteNum == 1) {
                     image = right1;
                 }
-                if(spriteNum == 2){
+                if (spriteNum == 2) {
                     image = right2;
                 }
                 break;

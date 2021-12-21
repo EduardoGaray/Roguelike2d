@@ -20,7 +20,7 @@ public class GamePanel extends JPanel implements Runnable {
     public int screenHeight = tileSize * maxScreenRow; //576 px
 
     //WORLD SETTINGS
-    public final int maxWorldCol =50;
+    public final int maxWorldCol = 50;
     public final int maxWorldRow = 50;
     public final int worldWidth = tileSize * maxWorldCol;
     public final int worldHeight = tileSize * maxWorldRow;
@@ -42,9 +42,20 @@ public class GamePanel extends JPanel implements Runnable {
         this.setFocusable(true);
     }
 
-    public void zoomInOut(int i){
+    public void zoomInOut(int i) {
 
+        int oldWorldWidth = tileSize * maxWorldCol;
         tileSize += i;
+        int newWorldWidth = tileSize * maxWorldCol;
+
+        player.speed = (double)newWorldWidth/600;
+
+        double multiplier = (double) newWorldWidth / oldWorldWidth;
+        double newPlayerWorldX = player.worldX * multiplier;
+        double newPlayerWorldY = player.worldY * multiplier;
+
+        player.worldX = newPlayerWorldX;
+        player.worldY = newPlayerWorldY;
 
     }
 

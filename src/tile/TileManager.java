@@ -28,16 +28,16 @@ public class TileManager {
             int row = 0;
             int x = 1;
             int y = 1;
-            for (int i = 0; i<tile.length; i++ ){
+            for (int i = 0; i < tile.length; i++) {
                 tile[i] = new Tile();
                 tile[i].id = i;
                 tile[i].x = x;
                 tile[i].y = y;
-                final String[] name = {"earth","wall"};
+                final String[] name = {"earth", "wall"};
                 Random random = new Random();
                 int index = random.nextInt(name.length);
                 tile[i].filename = name[index];
-                tile[i].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/"+tile[i].filename+".png")));
+                tile[i].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/" + tile[i].filename + ".png")));
                 col++;
                 x += 1;
                 if (col == gp.maxScreenCol) {
@@ -46,7 +46,7 @@ public class TileManager {
                     row++;
                     y += 1;
                 }
-                System.out.println(tile[i].filename+" "+tile[i].x+" "+tile[i].y+" "+tile[i].id);
+                System.out.println(tile[i].filename + " " + tile[i].x + " " + tile[i].y + " " + tile[i].id);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -56,43 +56,78 @@ public class TileManager {
     public void smoothMap() {
         try {
             int cont = 0;
+            int mod = 0;
             int north;
             int south;
             int west;
             int east;
-            for (int i = 0; i<tile.length; i++ ){
+            for (int a = 0; a < 4; a++) {
+                for (int i = 0; i < tile.length; i++) {
 
-               north = tile[i].id - gp.maxWorldCol;
-               south = tile[i].id + gp.maxWorldCol;
-               west = tile[i].id + 1;
-               east = tile[i].id - 1;
+                    north = tile[i].id - gp.maxWorldCol;
+                    south = tile[i].id + gp.maxWorldCol;
+                    west = tile[i].id + 1;
+                    east = tile[i].id - 1;
 
-               if(north <0){north = 0;}
-               if(south > tile.length-1){ south = tile.length-1;}
-                if(east <0){east = 0;}
-                if(west > tile.length-1){ west = tile.length-1;}
-               if(tile[i].filename.equals("wall") && tile[north].filename.equals("earth")){
-                   cont++;
-               }
-                if(tile[i].filename.equals("wall") && tile[south].filename.equals("earth")){
-                    cont++;
+                    if (north < 0) {
+                        north = 0;
+                    }
+                    if (south > tile.length - 1) {
+                        south = tile.length - 1;
+                    }
+                    if (east < 0) {
+                        east = 0;
+                    }
+                    if (west > tile.length - 1) {
+                        west = tile.length - 1;
+                    }
+                    if (tile[i].filename.equals("wall")) {
+                        if (tile[north].filename.equals("earth")) {
+                            cont++;
+                        }
+                        if (tile[south].filename.equals("earth")) {
+                            cont++;
+                        }
+                        if (tile[east].filename.equals("earth")) {
+                            cont++;
+                        }
+                        if (tile[west].filename.equals("earth")) {
+                            cont++;
+                        }
+                        if(a == 4){mod=3;} else { mod=4;}
+                        if (cont >= mod) {
+                            tile[i].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/earth.png")));
+                        }
+                        cont = 0;
+                    }
+                    if (tile[i].filename.equals("earth")) {
+                        if (tile[north].filename.equals("wall")) {
+                            cont++;
+                        }
+                        if (tile[south].filename.equals("wall")) {
+                            cont++;
+                        }
+                        if (tile[east].filename.equals("wall")) {
+                            cont++;
+                        }
+                        if (tile[west].filename.equals("wall")) {
+                            cont++;
+                        }
+                        if(a == 4){mod=4;} else { mod=3;}
+                        if (cont >= mod) {
+                            tile[i].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/wall.png")));
+                        }
+                        cont = 0;
+                    }
                 }
-                if(tile[i].filename.equals("wall") && tile[west].filename.equals("earth")){
-                    cont++;
-                }
-                if(tile[i].filename.equals("wall") && tile[east].filename.equals("earth")){
-                    cont++;
-                }
-                if(cont >=3){
-                    tile[i].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/earth.png")));
-                }
-                cont =0;
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        }
+    }
+
     //This method renders the tile array.image property
     public void draw(Graphics2D g2) {
         int col = 0;
@@ -103,14 +138,14 @@ public class TileManager {
             int worldX = col * gp.tileSize;
             int worldY = row * gp.tileSize;
 
-            int screenX = worldX -gp.player.worldX + gp.player.screenX;
-            int screenY = worldY -gp.player.worldY + gp.player.screenY;
+            int screenX = (int) (worldX - gp.player.worldX + gp.player.screenX);
+            int screenY = (int) (worldY - gp.player.worldY + gp.player.screenY);
 
             //this if is necessary to make sure we only render tiles currently on the screen
-            if(worldX + gp.tileSize > gp.player.worldX -gp.player.screenX &&
-                    worldX -gp.tileSize < gp.player.worldX + gp.player.screenX &&
-                    worldY + gp.tileSize > gp.player.worldY -gp.player.screenY &&
-                    worldY - gp.tileSize < gp.player.worldY + gp.player.screenY){
+            if (worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&
+                    worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
+                    worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
+                    worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
                 g2.drawImage(tile[cont].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
             }
             cont++;
