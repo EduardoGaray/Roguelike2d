@@ -18,7 +18,7 @@ public class TileManager {
         this.gp = gp;
         tile = new Tile[gp.maxWorldCol * gp.maxWorldRow];
         getTileImage();
-        smoothMap();
+        fillhole();
     }
 
     //this method generates basic tiles randomly, we can work on a more complex system for map generation from here
@@ -53,7 +53,7 @@ public class TileManager {
         }
     }
 
-    public void smoothMap() {
+    public void fillhole() {
         try {
             int cont = 0;
             int mod = 0;
@@ -61,9 +61,8 @@ public class TileManager {
             int south;
             int west;
             int east;
-            for (int a = 0; a < 4; a++) {
+            for (int y = 0; y <1; y++){
                 for (int i = 0; i < tile.length; i++) {
-
                     north = tile[i].id - gp.maxWorldCol;
                     south = tile[i].id + gp.maxWorldCol;
                     west = tile[i].id + 1;
@@ -94,11 +93,32 @@ public class TileManager {
                         if (tile[west].filename.equals("earth")) {
                             cont++;
                         }
-                        if(a == 4){mod=3;} else { mod=4;}
-                        if (cont >= mod) {
+                        if (cont >= 3) {
                             tile[i].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/earth.png")));
+                            tile[i].filename = "earth";
                         }
                         cont = 0;
+                    }
+                }
+            }
+            for (int y = 0; y <1; y++){
+                for (int i = 0; i < tile.length; i++) {
+                    north = tile[i].id - gp.maxWorldCol;
+                    south = tile[i].id + gp.maxWorldCol;
+                    west = tile[i].id + 1;
+                    east = tile[i].id - 1;
+
+                    if (north < 0) {
+                        north = 0;
+                    }
+                    if (south > tile.length - 1) {
+                        south = tile.length - 1;
+                    }
+                    if (east < 0) {
+                        east = 0;
+                    }
+                    if (west > tile.length - 1) {
+                        west = tile.length - 1;
                     }
                     if (tile[i].filename.equals("earth")) {
                         if (tile[north].filename.equals("wall")) {
@@ -113,19 +133,17 @@ public class TileManager {
                         if (tile[west].filename.equals("wall")) {
                             cont++;
                         }
-                        if(a == 4){mod=4;} else { mod=3;}
-                        if (cont >= mod) {
+                        if (cont >= 4) {
                             tile[i].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/wall.png")));
+                            tile[i].filename = "wall";
                         }
                         cont = 0;
                     }
                 }
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     //This method renders the tile array.image property
