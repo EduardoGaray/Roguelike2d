@@ -4,7 +4,11 @@ import main.GamePanel;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Objects;
 import java.util.Random;
 
@@ -12,14 +16,16 @@ public class TileManager {
     GamePanel gp;
     //Right now this is the array that we use to create the current game map, later on we must create every map in a separate array and save/load them as needed
     Tile[] tile;
-    public Tile[][] mapTileNum;
+    int[][] mapTileNum;
 
     public TileManager(GamePanel gp) {
         //Here we initialize the process to create the map
         this.gp = gp;
         tile = new Tile[gp.maxWorldCol * gp.maxWorldRow];
+        mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
         getTileImage();
-        fillhole();
+        loadMap("/maps/world01.txt");
+        //fillhole();
     }
 
     //this method generates basic tiles randomly, we can work on a more complex system for map generation from here
@@ -48,11 +54,41 @@ public class TileManager {
                     row++;
                     y += 1;
                 }
-                System.out.println(tile[i].filename + " " + tile[i].x + " " + tile[i].y + " " + tile[i].id);
+                //System.out.println(tile[i].filename + " " + tile[i].x + " " + tile[i].y + " " + tile[i].id);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void loadMap(String filepath){
+
+        try{
+            InputStream is = getClass().getResourceAsStream(filepath);
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+
+            int col = 0;
+            int row = 0;
+
+            while (col < gp.maxWorldCol && row < gp.maxScreenRow){
+                String line = br.readLine();
+                while (col < gp.maxWorldCol){
+                    String numbers[] = line.split(" ");
+                    int num = Integer.parseInt(numbers[col]);
+                    mapTileNum[col][row] = num;
+                    col++;
+                }
+                if(col == gp.maxWorldCol){
+                    col = 0;
+                    row++;
+                }
+
+            }
+
+        } catch(Exception e) {
+
+        }
+
     }
 
     public void fillhole() {
@@ -161,12 +197,15 @@ public class TileManager {
             int screenX = (int) (worldX - gp.player.worldX + gp.player.screenX);
             int screenY = (int) (worldY - gp.player.worldY + gp.player.screenY);
 
+            int tileNum = mapTileNum[col][row];
+
             //this if is necessary to make sure we only render tiles currently on the screen
             if (worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&
                     worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
                     worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
                     worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
-                g2.drawImage(tile[cont].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+                //g2.drawImage(tile[cont].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+                g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
             }
             cont++;
             col++;
