@@ -1,10 +1,12 @@
 package main;
 
 import entity.Entity;
+import entity.Player;
 
 public class CollisionChecker {
 
     GamePanel gp;
+    Player player;
 
     public CollisionChecker(GamePanel gp) {
         this.gp = gp;
@@ -22,11 +24,13 @@ public class CollisionChecker {
         int entityTopRow = entityTopWorldY/gp.tileSize;
         int entityBottomRow = entityBottomWorldY/gp.tileSize;
 
-        int tileNum1,tileNum2;
+        int playerposx, playerposy, entityposx,entityposy;
 
         switch (entity.direction){
             case "up":
                 entityTopRow = (int) ((entityTopWorldY - entity.speed)/gp.tileSize);
+                playerposx = (int) player.worldX;
+                playerposy = (int) player.worldY;
 
                 break;
             case "down":

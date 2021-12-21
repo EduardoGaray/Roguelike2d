@@ -12,6 +12,7 @@ public class TileManager {
     GamePanel gp;
     //Right now this is the array that we use to create the current game map, later on we must create every map in a separate array and save/load them as needed
     Tile[] tile;
+    public Tile[][] mapTileNum;
 
     public TileManager(GamePanel gp) {
         //Here we initialize the process to create the map
