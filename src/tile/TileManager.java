@@ -15,8 +15,8 @@ import java.util.Random;
 public class TileManager {
     GamePanel gp;
     //Right now this is the array that we use to create the current game map, later on we must create every map in a separate array and save/load them as needed
-    Tile[] tile;
-    int[][] mapTileNum;
+    public Tile[] tile;
+    public int[][] mapTileNum;
 
     public TileManager(GamePanel gp) {
         //Here we initialize the process to create the map
@@ -35,12 +35,15 @@ public class TileManager {
             tile[0].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/grass.png")));
             tile[1] = new Tile();
             tile[1].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/wall00.png")));
+            tile[1].collision = true;
             tile[2] = new Tile();
             tile[2].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/water.png")));
+            tile[2].collision = true;
             tile[3] = new Tile();
             tile[3].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/earth.png")));
             tile[4] = new Tile();
             tile[4].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/tree.png")));
+            tile[4].collision = true;
             tile[5] = new Tile();
             tile[5].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/sand.png")));
         } catch (IOException e){
@@ -75,7 +78,6 @@ public class TileManager {
         } catch(Exception e) {
 
         }
-
     }
     //This method renders the tile array.image property
     public void draw(Graphics2D g2) {

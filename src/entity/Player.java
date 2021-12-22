@@ -22,7 +22,7 @@ public class Player extends Entity {
         screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
         screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
 
-        solidArea = new Rectangle(8,16,32,32);
+        solidArea = new Rectangle(8, 16, 32, 32);
 
 
         setDefaultValues();
@@ -30,9 +30,9 @@ public class Player extends Entity {
     }
 
     public void setDefaultValues() {
-        worldX = gp.tileSize * 5;
-        worldY = gp.tileSize * 5;
-        speed = gp.worldWidth /600;
+        worldX = gp.tileSize * 23;
+        worldY = gp.tileSize * 20;
+        speed = gp.worldWidth / 600;
         direction = "down";
     }
 
@@ -47,26 +47,39 @@ public class Player extends Entity {
     }
 
     public void update() {
-        spriteCounter++;
-        if (keyH.upPressed) {
-            direction = "up";
-            worldY -= speed;
-        } else if (keyH.downPressed) {
-            direction = "down";
-            worldY += speed;
-        } else if (keyH.leftPressed) {
-            direction = "left";
-            worldX -= speed;
-            this.x -=1;
-            if(this.x <0){this.y = 0;}
-        } else if (keyH.rightPressed) {
-            direction = "right";
-            worldX += speed;
+        if (keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true || keyH.rightPressed == true){
+            if (keyH.upPressed) {
+                direction = "up";
+            } else if (keyH.downPressed) {
+                direction = "down";
+            } else if (keyH.leftPressed) {
+                direction = "left";
+            } else if (keyH.rightPressed) {
+                direction = "right";
+            }
+            // CHECK FOR COLLISION
+            collisionOn = false;
+            gp.cChecker.CheckTile(this);
+
+            //IF COLLISION IS FALSE, PLAYER CAN MOVE
+            if (!collisionOn) {
+                switch (direction) {
+                    case "up":
+                        worldY -= speed;
+                        break;
+                    case "down":
+                        worldY += speed;
+                        break;
+                    case "left":
+                        worldX -= speed;
+                        break;
+                    case "right":
+                        worldX += speed;
+                        break;
+                }
+            }
         }
-
-        collisionOn = false;
-        gp.cChecker.CheckTile(this);
-
+        spriteCounter++;
         if (spriteCounter > 8) {
             if (spriteNum == 1) {
                 spriteNum = 2;
@@ -115,7 +128,7 @@ public class Player extends Entity {
                 }
                 break;
         }
-        if (direction.equals("left") || direction.equals("up")){
+        if (direction.equals("left") || direction.equals("up")) {
             g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
         } else {
             g2.drawImage(image, screenX + gp.tileSize, screenY, -gp.tileSize, gp.tileSize, null);
