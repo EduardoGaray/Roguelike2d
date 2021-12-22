@@ -71,3 +71,128 @@
                 spriteCounter = 0;
             }
         }
+
+ public void getTileImage() {
+        try {
+            int col = 0;
+            int row = 0;
+            int x = 1;
+            int y = 1;
+            for (int i = 0; i < tile.length; i++) {
+                tile[i] = new Tile();
+                tile[i].id = i;
+                tile[i].x = x;
+                tile[i].y = y;
+                final String[] name = {"floor00", "wall00"};
+                Random random = new Random();
+                int index = random.nextInt(name.length);
+                tile[i].filename = name[index];
+                if(tile[i].filename.equals("wall00")){ tile[i].collision = true;}
+                tile[i].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/" + tile[i].filename + ".png")));
+                col++;
+                x += 1;
+                if (col == gp.maxScreenCol) {
+                    col = 0;
+                    x = 1;
+                    row++;
+                    y += 1;
+                }
+                //System.out.println(tile[i].filename + " " + tile[i].x + " " + tile[i].y + " " + tile[i].id);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+     public void fillhole() {
+            try {
+                int cont = 0;
+                int mod = 0;
+                int north;
+                int south;
+                int west;
+                int east;
+                for (int y = 0; y <1; y++){
+                    for (int i = 0; i < tile.length; i++) {
+                        north = tile[i].id - gp.maxWorldCol;
+                        south = tile[i].id + gp.maxWorldCol;
+                        west = tile[i].id + 1;
+                        east = tile[i].id - 1;
+
+                        if (north < 0) {
+                            north = 0;
+                        }
+                        if (south > tile.length - 1) {
+                            south = tile.length - 1;
+                        }
+                        if (east < 0) {
+                            east = 0;
+                        }
+                        if (west > tile.length - 1) {
+                            west = tile.length - 1;
+                        }
+                        if (tile[i].filename.equals("wall00")) {
+                            if (tile[north].filename.equals("floor00")) {
+                                cont++;
+                            }
+                            if (tile[south].filename.equals("floor00")) {
+                                cont++;
+                            }
+                            if (tile[east].filename.equals("floor00")) {
+                                cont++;
+                            }
+                            if (tile[west].filename.equals("floor00")) {
+                                cont++;
+                            }
+                            if (cont >= 3) {
+                                tile[i].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/floor00.png")));
+                                tile[i].filename = "floor00";
+                            }
+                            cont = 0;
+                        }
+                    }
+                }
+                for (int y = 0; y <1; y++){
+                    for (int i = 0; i < tile.length; i++) {
+                        north = tile[i].id - gp.maxWorldCol;
+                        south = tile[i].id + gp.maxWorldCol;
+                        west = tile[i].id + 1;
+                        east = tile[i].id - 1;
+
+                        if (north < 0) {
+                            north = 0;
+                        }
+                        if (south > tile.length - 1) {
+                            south = tile.length - 1;
+                        }
+                        if (east < 0) {
+                            east = 0;
+                        }
+                        if (west > tile.length - 1) {
+                            west = tile.length - 1;
+                        }
+                        if (tile[i].filename.equals("floor00")) {
+                            if (tile[north].filename.equals("wall00")) {
+                                cont++;
+                            }
+                            if (tile[south].filename.equals("wall00")) {
+                                cont++;
+                            }
+                            if (tile[east].filename.equals("wall00")) {
+                                cont++;
+                            }
+                            if (tile[west].filename.equals("wall00")) {
+                                cont++;
+                            }
+                            if (cont >= 4) {
+                                tile[i].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/wall00.png")));
+                                tile[i].filename = "wall00";
+                            }
+                            cont = 0;
+                        }
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
